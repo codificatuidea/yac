@@ -5,6 +5,9 @@
     width: 100vw;
     height: 100vh;
 }
+#errores {
+  color: red;
+}
 #main {
     grid-area: main;
 }

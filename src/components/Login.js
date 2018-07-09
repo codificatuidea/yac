@@ -2,13 +2,14 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 import axios from 'axios';
-import * as endpoint from './constants/EndPoints'
+import * as endpoint from '../constants/EndPoints'
 
 class Login extends Component {
 
   state = {
     username: "",
     password: "",
+    errors: ""
   }
 
   onSubmit = e => {
@@ -23,7 +24,13 @@ class Login extends Component {
         this.currentUser();
       }),
       (error) => {
-        var status = error.response.status
+        var errorsString = "";
+        for(let a in error.response.data) {
+          if (error.response.data[a]) {
+            errorsString += " --- "+a+": "+error.response.data[a];
+          }
+        }
+        this.setState({ errors: errorsString });
       });
   }
 
@@ -65,6 +72,7 @@ class Login extends Component {
               id="password"
               onChange={e => this.setState({password: e.target.value})} />
           </p>
+          <p id="errores">{this.state.errors}</p>
           <p>
             <button type="submit">Iniciar sesión</button>
           </p>

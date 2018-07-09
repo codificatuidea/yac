@@ -3,13 +3,14 @@ import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import axios from 'axios';
 import Login from './Login';
-import * as endpoint from './constants/EndPoints'
+import * as endpoint from '../constants/EndPoints'
 
 class Register extends Component {
 
   state = {
     username: "",
     password: "",
+    errors: ""
   }
 
   onSubmit = e => {
@@ -21,10 +22,19 @@ class Register extends Component {
     };
 
     axios.post(endpoint.SERVER+endpoint.REGISTER, { username:this.state.username, password1:this.state.password1, password2: this.state.password2 })
-      .then(res => {
-        this.currentUser();
-      })
-  }
+    .then((res => {
+      this.currentUser();
+    }),
+    (error) => {
+      var errorsString = "";
+      for(let a in error.response.data) {
+        if (error.response.data[a]) {
+          errorsString += " --- "+a+": "+error.response.data[a];
+        }
+      }
+      this.setState({ errors: errorsString });
+    });
+}
 
   currentUser() {
     axios.get(endpoint.SERVER+endpoint.CURRENT_USER, {})
@@ -67,6 +77,7 @@ class Register extends Component {
               type="password" id="password2"
               onChange={e => this.setState({password2: e.target.value})} />
           </p>
+          <p id="errores">{this.state.errors}</p>
           <p>
             <button type="submit">Registrarme</button>
           </p>

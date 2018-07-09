@@ -24,6 +24,7 @@ const Sidebar = ({ users }) => {
 
         axios.post(endpoint.SERVER+endpoint.LOGOUT, {}, config)
         .then((response) => {
+            window.localStorage.clear();
             document.location.href='/';
           },
           (error) => {
