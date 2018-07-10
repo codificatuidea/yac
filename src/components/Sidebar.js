@@ -1,8 +1,8 @@
 import React from "react"
-import PropTypes, { instanceOf } from "prop-types"
+import PropTypes from "prop-types"
 import axios from 'axios'
-import { Redirect } from "react-router-dom";
 import * as endpoint from '../constants/EndPoints'
+import * as link from '../constants/Links'
 
 const Sidebar = ({ users }) => {
 
@@ -11,7 +11,7 @@ const Sidebar = ({ users }) => {
       <button type="button" onClick={(e) => {
 
         function getCookie(name) {
-          var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
+          var regexp = new RegExp("(?:^" + name + "|;*"+ name + ")=(.*?)(?:;|$)", "g");
           var result = regexp.exec(document.cookie);
           return (result === null) ? null : result[1];
         }
@@ -22,17 +22,17 @@ const Sidebar = ({ users }) => {
           headers: { 'X-CSRFTOKEN': csrftoken }
         };
 
-        axios.post(endpoint.SERVER+endpoint.LOGOUT, {}, config)
+        axios.post(endpoint.SERVER+endpoint.TO_LOGOUT, {}, config)
         .then((response) => {
             window.localStorage.clear();
-            document.location.href='/';
+            document.location.href=link.LINK_LOGIN;
           },
           (error) => {
-            var status = error.response.status
+            console.log(error.response.status);
           }
         );
 
-      }}>Cerrar sesión</button>
+      }}>Logout</button>
       <ul>
         {users.map(user => (
           <li key={user.id}>{user.name}</li>

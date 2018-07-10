@@ -9,10 +9,15 @@ import createSagaMiddleware from 'redux-saga'
 import handleNewMessage from './sagas'
 import setupSocket from './sockets'
 import reducers from './reducers'
+import * as link from './constants/Links'
 
 class Yac extends Component {
 
   render() {
+    if (!window.localStorage['userData']) {
+      document.location.href=link.LINK_LOGIN;
+    }
+
     const userData = JSON.parse(window.localStorage['userData']);
     const sagaMiddleware = createSagaMiddleware()
     const username = userData.nickname;
@@ -26,6 +31,7 @@ class Yac extends Component {
     const socket = setupSocket(store.dispatch, username, userId)
 
     sagaMiddleware.run(handleNewMessage, { socket, username, userId })
+
 
     return (
       <Provider store={store}>

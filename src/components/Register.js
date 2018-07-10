@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Link} from "react-router-dom";
 import axios from 'axios';
-import Login from './Login';
 import * as endpoint from '../constants/EndPoints'
+import * as link from '../constants/Links'
 
 class Register extends Component {
 
@@ -21,7 +21,7 @@ class Register extends Component {
       password2: this.state.password2
     };
 
-    axios.post(endpoint.SERVER+endpoint.REGISTER, { username:this.state.username, password1:this.state.password1, password2: this.state.password2 })
+    axios.post(endpoint.SERVER+endpoint.TO_REGISTER, user)
     .then((res => {
       this.currentUser();
     }),
@@ -37,7 +37,7 @@ class Register extends Component {
 }
 
   currentUser() {
-    axios.get(endpoint.SERVER+endpoint.CURRENT_USER, {})
+    axios.get(endpoint.SERVER+endpoint.TO_CURRENT_USER, {})
     .then((response) => {
         var userData = {
           id: response.data.pk,
@@ -45,10 +45,10 @@ class Register extends Component {
         };
 
         localStorage.setItem("userData", JSON.stringify(userData));
-        this.props.history.push('/chat')
+        this.props.history.push(link.LINK_CHAT)
       },
       (error) => {
-        var status = error.response.status
+        console.log(error.response.status);
       }
     );
 
@@ -57,8 +57,8 @@ class Register extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-        <fieldset>
-          <legend>Registro</legend>
+        <fieldset class="m10">
+          <legend>Sign up</legend>
           <p>
             <label htmlFor="username">Nickname: </label>
             <input
@@ -66,24 +66,24 @@ class Register extends Component {
               onChange={e => this.setState({username: e.target.value})} />
           </p>
           <p>
-            <label htmlFor="password1">Contraseña: </label>
+            <label htmlFor="password1">Password: </label>
             <input
               type="password" id="password1"
               onChange={e => this.setState({password1: e.target.value})} />
           </p>
           <p>
-            <label htmlFor="password2">Confirmar contraseña: </label>
+            <label htmlFor="password2">Confirm password: </label>
             <input
               type="password" id="password2"
               onChange={e => this.setState({password2: e.target.value})} />
           </p>
           <p id="errores">{this.state.errors}</p>
           <p>
-            <button type="submit">Registrarme</button>
+            <button type="submit">Sign up</button>
           </p>
 
           <p>
-            Ya tienes una cuenta? <Link to="/">Inicia sesión</Link>
+            You have an account? <Link to="/">Login</Link>
           </p>
         </fieldset>
       </form>

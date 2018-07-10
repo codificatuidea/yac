@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 
 const Message = ({ message, author }) => (
   <p>
-    <i>{author}</i>: {message}
+    <strong>{author}</strong>: {message}
   </p>
 )
 

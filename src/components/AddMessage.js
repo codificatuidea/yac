@@ -6,7 +6,7 @@ const AddMessage = (props) => {
 
   return (
     <section id="new-message">
-      <input
+      <textarea
         onKeyPress={(e) => {
         if (e.key === 'Enter') {
           props.dispatch(input.value, 'Me')
@@ -17,7 +17,7 @@ const AddMessage = (props) => {
         ref={(node) => {
         input = node
       }}
-      />
+      ></textarea>
     </section>
   )
 }

@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import * as endpoint from '../constants/EndPoints'
+import * as link from '../constants/Links'
 
 class Login extends Component {
 
@@ -19,7 +20,7 @@ class Login extends Component {
       password: this.state.password
     };
 
-    axios.post(endpoint.SERVER+endpoint.LOGIN, user)
+    axios.post(endpoint.SERVER+endpoint.TO_LOGIN, user)
       .then((res => {
         this.currentUser();
       }),
@@ -35,7 +36,7 @@ class Login extends Component {
   }
 
   currentUser() {
-    axios.get(endpoint.SERVER+endpoint.CURRENT_USER, {})
+    axios.get(endpoint.SERVER+endpoint.TO_CURRENT_USER, {})
     .then((response) => {
       console.log(response);
         var userData = {
@@ -44,10 +45,10 @@ class Login extends Component {
         };
 
         localStorage.setItem("userData", JSON.stringify(userData));
-        this.props.history.push('/chat')
+        this.props.history.push(link.LINK_CHAT)
       },
       (error) => {
-        var status = error.response.status
+        console.log(error.response.status);
       }
     );
 
@@ -56,8 +57,8 @@ class Login extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-        <fieldset>
-          <legend>Inicia sesión</legend>
+        <fieldset class="m10">
+          <legend>Login</legend>
           <p>
             <label htmlFor="username">Nickname: </label>
             <input
@@ -66,7 +67,7 @@ class Login extends Component {
               onChange={e => this.setState({username: e.target.value})} />
           </p>
           <p>
-            <label htmlFor="password">Contraseña: </label>
+            <label htmlFor="password">Password: </label>
             <input
               type="password"
               id="password"
@@ -74,11 +75,11 @@ class Login extends Component {
           </p>
           <p id="errores">{this.state.errors}</p>
           <p>
-            <button type="submit">Iniciar sesión</button>
+            <button type="submit">Login</button>
           </p>
 
           <p>
-            No estas registrado? <Link to="/signup">Regístrate</Link>
+          You are not yet registered? <Link to="/signup">Sign up</Link>
           </p>
         </fieldset>
       </form>
